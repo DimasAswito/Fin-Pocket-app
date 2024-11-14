@@ -1,4 +1,4 @@
-package com.example.finpocket.ui.dashboard
+package com.example.finpocket.ui.plan
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.finpocket.databinding.FragmentDashboardBinding
+import com.example.finpocket.databinding.FragmentPlanBinding
 
-class DashboardFragment : Fragment() {
+class PlanFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentPlanBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -23,15 +23,15 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+            ViewModelProvider(this).get(PlanViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentPlanBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+//        val textView: TextView = binding.textPlan
+//        dashboardViewModel.text.observe(viewLifecycleOwner) {
+//            textView.text = it
+//        }
         return root
     }
 
