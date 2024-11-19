@@ -1,5 +1,7 @@
 package com.example.finpocket.ui.profile
 
+import android.app.AlertDialog
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,18 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.finpocket.R
 import com.example.finpocket.databinding.FragmentPlanBinding
 import com.example.finpocket.databinding.FragmentProfileBinding
+import com.example.finpocket.ui.Auth.LoginActivity
 import com.example.finpocket.ui.plan.PlanViewModel
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,17 +27,69 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(ProfileViewModel::class.java)
-
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textProfile
-//        dashboardViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
+        // Set up click listeners for TextViews
+        setupClickListeners()
+
         return root
+    }
+
+    private fun setupClickListeners() {
+        // Navigate to Update Photo Activity
+        binding.updatePhoto.setOnClickListener {
+            val intent = Intent(requireContext(), UpdatePhotoActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Navigate to Change Password Activity
+        binding.forgotPassword.setOnClickListener{
+            val intent = Intent(requireContext(), ChangePasswordActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Navigate to About Us Activity
+        binding.about.setOnClickListener {
+            val intent = Intent(requireContext(), AboutUsActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Navigate to Help Activity
+        binding.help.setOnClickListener {
+            val intent = Intent(requireContext(), HelpActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Show logout confirmation dialog
+        binding.logout.setOnClickListener {
+            showLogoutConfirmationDialog()
+        }
+    }
+
+    private fun showLogoutConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Logout")
+            .setMessage("Apakah Anda yakin ingin logout?")
+            .setPositiveButton("Yes") { dialog, _ ->
+                // Perform logout action
+                logout()
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun logout() {
+        // Perform logout logic here (e.g., clear session, redirect to login)
+        Toast.makeText(requireContext(), "You have been logged out", Toast.LENGTH_SHORT).show()
+        // Redirect to LoginActivity or MainActivity
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

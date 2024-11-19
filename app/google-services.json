@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "92073197449",
+    "project_id": "finpocket",
+    "storage_bucket": "finpocket.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:92073197449:android:ecbcb83ba7d8c7e14e2b58",
+        "android_client_info": {
+          "package_name": "com.example.finpocket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "92073197449-j21rgvg2beahg31hd1fd6v4jpihl9tu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMZfMw48QCe-88DFRJYEZJO3uLze2vqKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "92073197449-j21rgvg2beahg31hd1fd6v4jpihl9tu2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
