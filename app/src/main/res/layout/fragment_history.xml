@@ -84,6 +84,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/donutChart"
             app:tabGravity="fill"
+            app:tabIndicator="@drawable/tab_bg_normal_green"
             app:tabIndicatorColor="@android:color/transparent"
             app:tabIndicatorHeight="0dp"
             app:tabMode="fixed"

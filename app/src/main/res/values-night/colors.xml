@@ -140,4 +140,14 @@
     <color name="md_theme_surfaceContainer_highContrast">#1D211B</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#272B25</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#323630</color>
+
+    <!--color for categories-->
+    <color name="income_colors">#7DFFB1</color>
+    <color name="groceries_colors">#FFA274</color>
+    <color name="transport_colors">#C399FF</color>
+    <color name="entertainment_colors">#65B5FF</color>
+    <color name="healthcare_colors">#FFD958</color>
+    <color name="education_colors">#FFD958</color>
+    <color name="utilities_colors">#FF7F7F</color>
+    <color name="bills_colors">#69AAFF</color>
 </resources>
