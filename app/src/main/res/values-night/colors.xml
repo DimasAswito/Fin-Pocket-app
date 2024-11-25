@@ -1,5 +1,4 @@
 <resources>
-    <color name="md_theme_primary">#A1D39A</color>
     <color name="md_theme_onPrimary">#0A390F</color>
     <color name="md_theme_primaryContainer">#235024</color>
     <color name="md_theme_onPrimaryContainer">#BCF0B4</color>
@@ -27,7 +26,6 @@
     <color name="md_theme_inverseSurface">#E0E4DB</color>
     <color name="md_theme_inverseOnSurface">#2D322C</color>
     <color name="md_theme_inversePrimary">#3B6939</color>
-    <color name="md_theme_primaryFixed">#BCF0B4</color>
     <color name="md_theme_onPrimaryFixed">#002204</color>
     <color name="md_theme_primaryFixedDim">#A1D39A</color>
     <color name="md_theme_onPrimaryFixedVariant">#235024</color>
@@ -150,4 +148,13 @@
     <color name="education_colors">#FFD958</color>
     <color name="utilities_colors">#FF7F7F</color>
     <color name="bills_colors">#69AAFF</color>
+
+    <!--color for text-->
+    <color name="black_text">#FFFFFF</color>
+    <color name="white_text">#000000</color>
+
+    <!--color background-->
+    <color name="md_theme_primary">#A1D39A</color>
+    <color name="md_theme_primaryFixed">#508D4E</color>
+
 </resources>

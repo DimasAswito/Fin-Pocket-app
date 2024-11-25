@@ -1,12 +1,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
-
-    <!-- Image View -->
     <ImageView
         android:id="@+id/logoImageView"
         android:layout_width="200dp"
@@ -18,68 +15,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <!-- Input Email -->
-
-
-    <!-- Input Password -->
-
-    <!-- Login Button -->
-
-    <!-- Login with Google -->
-
-
-    <!-- Teks di atas ImageButton -->
-    <TextView
-        android:id="@+id/orSignInText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log in with Your Account above"
-        android:textColor="@android:color/darker_gray"
-        android:textStyle="italic"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
-
-    <!-- Kontainer untuk tombol Google dan Facebook -->
     <LinearLayout
         android:id="@+id/socialLoginContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/orSignInText">
 
-        <!-- Tombol Login dengan Google -->
-        <!-- Atur ukuran drawable -->
-
-        <!-- Tombol Login dengan Facebook -->
-        <Button
+        <com.google.android.gms.common.SignInButton
             android:id="@+id/googleLoginButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/md_theme_secondary"
-            android:text="Google"
+            android:layout_marginBottom="16dp"
+            android:text="Login With Google"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/facebookLoginButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
+            android:layout_gravity="center"
             android:backgroundTint="@color/md_theme_secondary"
-            android:text="Facebook"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:text="Login With Facebook Account"
+            android:visibility="visible" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/orSignInText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Log In with Your Account above"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
 
 
     <LinearLayout
@@ -93,7 +69,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/socialLoginContainer">
 
-        <!-- Have Account Text -->
         <TextView
             android:id="@+id/haveAccountText"
             android:layout_width="wrap_content"
@@ -102,16 +77,13 @@
             android:text="Not Have Account?"
             android:textColor="@android:color/darker_gray" />
 
-        <!-- Login Link -->
         <TextView
             android:id="@+id/loginLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Sign Up"
+            android:text="Sign In"
             android:textColor="@color/md_theme_primary"
             android:textStyle="bold" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

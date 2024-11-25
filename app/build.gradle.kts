@@ -36,6 +36,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -54,9 +55,12 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.gridlayout)
     implementation(libs.firebase.auth)
+    implementation(libs.googleid)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.donut)
+    implementation (libs.facebook.android.sdk)
+
 }
