@@ -1,5 +1,6 @@
 package com.example.finpocket.ui.register
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +12,10 @@ import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.lifecycleScope
 import com.example.finpocket.MainActivity
 import com.example.finpocket.R
+import com.example.finpocket.api.ApiConfig
 import com.example.finpocket.databinding.ActivityRegisterBinding
+import com.example.finpocket.model.User
+import com.example.finpocket.pref.PreferenceHelper
 import com.example.finpocket.ui.login.LoginActivity
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -120,12 +124,34 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun sendUserToApi(firebaseId: String) {
+        val user = User(firebase_id = firebaseId)
+
+        lifecycleScope.launch {
+            try {
+                val response = ApiConfig.instance.registerUser(user)
+                if (response.isSuccessful) {
+                    Log.d(TAG, "User registered successfully")
+                } else {
+                    Log.e(TAG, "Failed to register user: ${response.errorBody()?.string()}")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error registering user: ${e.message}")
+            }
+        }
+    }
+
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
+            val firebaseId = currentUser.uid
+            PreferenceHelper.saveUserId(this, firebaseId) // Simpan user_id
+            sendUserToApi(firebaseId)
+
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
