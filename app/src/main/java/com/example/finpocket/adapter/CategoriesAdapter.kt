@@ -3,6 +3,7 @@ package com.example.finpocket.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -15,37 +16,18 @@ class CategoriesAdapter(
     private val onCategorySelected: (List<String>) -> Unit
 ) : RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>() {
 
-    // List untuk melacak kategori yang dipilih
     private val selectedCategories = mutableListOf<String>()
 
-    inner class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val categoryName: TextView = view.findViewById(R.id.category_name)
-        val container: CardView = view.findViewById(R.id.categoryContainer)
-
-        fun bind(category: String) {
-            categoryName.text = category
-
-            // Ubah tampilan berdasarkan status seleksi
-            if (selectedCategories.contains(category)) {
-                container.setBackgroundResource(R.drawable.category_selected_background)
-                categoryName.setTextColor(itemView.context.getColor(R.color.black_text))
-            } else {
-                container.setBackgroundResource(R.drawable.category_unselected_background)
-                categoryName.setTextColor(itemView.context.getColor(R.color.black_text))
-            }
-
-            // Tambahkan logika klik
-            itemView.setOnClickListener {
-                if (selectedCategories.contains(category)) {
-                    selectedCategories.remove(category)
-                } else {
-                    selectedCategories.add(category)
-                }
-                notifyItemChanged(adapterPosition)
-                onCategorySelected(selectedCategories)
-            }
-        }
-    }
+    // Peta ikon untuk setiap kategori
+    private val categoryIcons = mapOf(
+        "Bills" to R.drawable.bills,
+        "Groceries" to R.drawable.groceries,
+        "Transport" to R.drawable.transport,
+        "Entertainment" to R.drawable.entertainment,
+        "Healthcare" to R.drawable.healthcare,
+        "Education" to R.drawable.education,
+        "Utilities" to R.drawable.utilities
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -54,9 +36,30 @@ class CategoriesAdapter(
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bind(categories[position])
+        val category = categories[position]
+
+        holder.categoryName.text = category
+
+        // Set ikon sesuai kategori
+        holder.categoryIcon.setImageResource(categoryIcons[category] ?: R.drawable.ic_baseline_wallet_24)
+
+        // Logika untuk pemilihan kategori
+        holder.itemView.setOnClickListener {
+            if (selectedCategories.contains(category)) {
+                selectedCategories.remove(category)
+                holder.itemView.setBackgroundResource(R.drawable.category_unselected_background)
+            } else {
+                selectedCategories.add(category)
+                holder.itemView.setBackgroundResource(R.drawable.category_selected_background)
+            }
+            onCategorySelected(selectedCategories)
+        }
     }
 
     override fun getItemCount(): Int = categories.size
-}
 
+    class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val categoryName: TextView = view.findViewById(R.id.category_name)
+        val categoryIcon: ImageView = view.findViewById(R.id.categoryIcon)
+    }
+}

@@ -7,16 +7,33 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
-    app:cardBackgroundColor="#E0E0E0"
     android:background="@drawable/category_unselected_background">
 
-    <TextView
-        android:id="@+id/category_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:orientation="horizontal"
         android:padding="16dp"
-        android:text="Category"
-        android:textColor="#000"
-        android:textSize="16sp" />
+        android:gravity="center_vertical">
+
+        <!-- Ikon di sebelah kiri -->
+        <ImageView
+            android:id="@+id/categoryIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_baseline_wallet_24"
+            android:contentDescription="Icon Category" />
+
+        <!-- Teks kategori -->
+        <TextView
+            android:id="@+id/category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
+
