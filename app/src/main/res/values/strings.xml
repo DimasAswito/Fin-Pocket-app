@@ -10,4 +10,13 @@
     <string name="fb_login_protocol_scheme">fb1134088615076628</string>
     <string name="facebook_client_token">531413609ba1bf8cdf1fc4ab08f16009</string>
 
+    <string-array name="spending_categories">
+        <item>Bills</item>
+        <item>Groceries</item>
+        <item>Transport</item>
+        <item>Entertainment</item>
+        <item>Healthcare</item>
+        <item>Education</item>
+        <item>Utilities</item>
+    </string-array>
 </resources>
