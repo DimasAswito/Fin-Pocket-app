@@ -51,12 +51,6 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
-        // Navigate to Change Password Activity
-        binding.forgotPassword.setOnClickListener{
-            val intent = Intent(requireContext(), ChangePasswordActivity::class.java)
-            startActivity(intent)
-        }
-
         // Navigate to About Us Activity
         binding.about.setOnClickListener {
             val intent = Intent(requireContext(), AboutUsActivity::class.java)
