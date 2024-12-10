@@ -60,33 +60,33 @@
         app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
 
 
-    <LinearLayout
-        android:id="@+id/accountSection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/socialLoginContainer">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/accountSection"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/socialLoginContainer">-->
 
-        <!-- Have Account Text -->
-        <TextView
-            android:id="@+id/haveAccountText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Have Account?"
-            android:textColor="@android:color/darker_gray" />
+<!--        &lt;!&ndash; Have Account Text &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/haveAccountText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:text="Have Account?"-->
+<!--            android:textColor="@android:color/darker_gray" />-->
 
-        <TextView
-            android:id="@+id/loginLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Login"
-            android:textColor="@color/md_theme_primary"
-            android:textStyle="bold" />
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/loginLink"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="Login"-->
+<!--            android:textColor="@color/md_theme_primary"-->
+<!--            android:textStyle="bold" />-->
+<!--    </LinearLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,15 +46,11 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.welcome.WelcomeActivity"
             android:exported="false" />
         <activity
             android:name=".ui.register.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.login.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".ui.profile.UpdatePhotoActivity"
@@ -67,6 +63,12 @@
             android:exported="false" />
         <activity
             android:name=".ui.profile.HelpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.recomendationPlanning.RecomendationPlanningActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.manualPlanning.ManualPlanningActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -88,7 +90,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
     </application>
 
 </manifest>

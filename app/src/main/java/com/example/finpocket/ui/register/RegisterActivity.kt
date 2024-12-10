@@ -1,6 +1,5 @@
 package com.example.finpocket.ui.register
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +15,7 @@ import com.example.finpocket.api.ApiConfig
 import com.example.finpocket.databinding.ActivityRegisterBinding
 import com.example.finpocket.model.User
 import com.example.finpocket.pref.PreferenceHelper
-import com.example.finpocket.ui.login.LoginActivity
+import com.example.finpocket.ui.manualPlanning.ManualPlanningActivity
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -52,10 +51,10 @@ class RegisterActivity : AppCompatActivity() {
         // Setup tombol login
         setupLoginButtons()
 
-        // Navigasi ke Login
-        binding.loginLink.setOnClickListener {
-            navigateToLogin()
-        }
+//        // Navigasi ke Login
+//        binding.loginLink.setOnClickListener {
+//            navigateToLogin()
+//        }
     }
 
     private fun setupLoginButtons() {
@@ -64,7 +63,8 @@ class RegisterActivity : AppCompatActivity() {
 
         // Facebook Login
         binding.facebookLoginButton.setPermissions("email", "public_profile")
-        binding.facebookLoginButton.registerCallback(callbackManager,
+        binding.facebookLoginButton.registerCallback(
+            callbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
                     handleFacebookAccessToken(result.accessToken)
@@ -147,22 +147,21 @@ class RegisterActivity : AppCompatActivity() {
             PreferenceHelper.saveUserId(this, firebaseId) // Simpan user_id
             sendUserToApi(firebaseId)
 
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, ManualPlanningActivity::class.java))
             finish()
         }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun navigateToLogin() {
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-    }
+//    private fun navigateToLogin() {
+//        val intent = Intent(this, LoginActivity::class.java)
+//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        startActivity(intent)
+//    }
 
     companion object {
         private const val TAG = "RegisterActivity"
