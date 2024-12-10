@@ -13,21 +13,29 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.futured.donut.DonutSection
 import com.example.finpocket.R
+import com.example.finpocket.adapter.HistoryAdapter
 import com.example.finpocket.databinding.FragmentHistoryBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
+import java.text.NumberFormat
+import java.util.Locale
 
 class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
+    private lateinit var historyAdapter: HistoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        setBottomMarginForView(binding.scrollHistoryRecyclerView)
 
         setupMonthSpinner()
         setupTabs()
@@ -37,81 +45,57 @@ class HistoryFragment : Fragment() {
     }
 
     private fun setupMonthSpinner() {
-        // Tambahkan item "Choose Month" sebagai default di awal daftar
-        val months = listOf("Choose Month") + listOf(
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-        )
-
-        // Buat adapter untuk Spinner
+        val months = resources.getStringArray(R.array.months)
         val adapter = ArrayAdapter(
             requireContext(), android.R.layout.simple_spinner_item, months
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        // Set adapter ke Spinner
         binding.monthSpinner.adapter = adapter
 
-        // Listener untuk item yang dipilih
         binding.monthSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedMonth = months[position]
-                if (position == 0) {
-                    // Jika default item "Choose Month" dipilih
-                    Toast.makeText(requireContext(), "Please choose a month", Toast.LENGTH_SHORT)
-                        .show()
+                if (selectedMonth == "December") {
+                    updateDonutChartForIncome()
                 } else {
-                    // Jika bulan lain dipilih
-                    Toast.makeText(requireContext(), "Selected: $selectedMonth", Toast.LENGTH_SHORT)
-                        .show()
+                    clearDonutChart()
                 }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Do nothing
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
     private fun updateDonutChartForIncome() {
-        binding.donutChart.submitData(
-            listOf(
-                DonutSection("Salary", Color.GREEN, 60f),
-                DonutSection("Investments", Color.BLUE, 40f)
-            )
+        val data = listOf(
+            DonutSection("Income", Color.parseColor("#7DFFB1"), 100f)
         )
-        binding.donutCenterText.apply {
-            text = "Rp.1.200.000"
-            setTextColor(Color.GREEN) // Ubah warna teks ke hijau
-        }
+        binding.donutChart.submitData(data)
+        binding.donutCenterText.text = "Rp.5.200.000"
+        binding.donutCenterText.setTextColor(Color.GRAY)
     }
-
 
     private fun updateDonutChartForSpending() {
-        binding.donutChart.submitData(
-            listOf(
-                DonutSection("Rent", Color.RED, 50f),
-                DonutSection("Groceries", Color.YELLOW, 30f),
-                DonutSection("Entertainment", Color.MAGENTA, 20f)
-            )
+        val data = listOf(
+            DonutSection("Bills", Color.parseColor("#69AAFF"), 20f),
+            DonutSection("Groceries", Color.parseColor("#FFA274"), 25f),
+            DonutSection("Transport", Color.parseColor("#C399FF"), 15f),
+            DonutSection("Entertainment", Color.parseColor("#65B5FF"), 10f),
+            DonutSection("Healthcare", Color.parseColor("#FFD958"), 10f),
+            DonutSection("Education", Color.parseColor("#FFD958"), 10f),
+            DonutSection("Utilities", Color.parseColor("#FF7F7F"), 10f)
         )
-        binding.donutCenterText.apply {
-            text = "Rp.800.000"
-            setTextColor(Color.RED) // Ubah warna teks ke merah
-        }
+        binding.donutChart.submitData(data)
+        binding.donutCenterText.text = "Rp.3.400.000"
+        binding.donutCenterText.setTextColor(Color.GRAY)
     }
+
+    private fun clearDonutChart() {
+        binding.donutChart.submitData(emptyList())
+        binding.donutCenterText.text = "No Data"
+        binding.donutCenterText.setTextColor(Color.GRAY)
+    }
+
 
 
     private fun setupTabs() {
@@ -183,14 +167,14 @@ class HistoryFragment : Fragment() {
         // Daftar kategori kebutuhan hidup
         val categories = listOf(
             "Choose Category",
-            "Food",
-            "Housing",
-            "Transportation",
+            "Bills",
+            "Groceries",
+            "Transport",
+            "Entertainment",
             "Healthcare",
             "Education",
             "Utilities",
-            "Clothing",
-            "Entertainment"
+            "Income"
         )
 
         // Buat adapter untuk Spinner
@@ -205,31 +189,54 @@ class HistoryFragment : Fragment() {
         // Listener untuk item yang dipilih
         binding.categorySpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?, view: View?, position: Int, id: Long
-                ) {
-                    val selectedCategory = categories[position]
-                    if (position == 0) {
-                        // Jika default item "Choose Category" dipilih
-                        Toast.makeText(
-                            requireContext(), "Please choose a category", Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        // Jika kategori lain dipilih
-                        Toast.makeText(
-                            requireContext(),
-                            "Selected Category: $selectedCategory",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selectedCategory = resources.getStringArray(R.array.categories)[position]
+                    historyAdapter.filterByCategory(if (position == 0) null else selectedCategory)
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // Tidak ada tindakan
-                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
+
+    }
+    private fun formatCurrency(amount: Int): String {
+        val localeID = Locale("in", "ID") // Gunakan locale Indonesia
+        val formatter = NumberFormat.getNumberInstance(localeID)
+        return formatter.format(amount)
     }
 
+    private fun setupRecyclerView() {
+        val historyData = resources.getStringArray(R.array.history_data).map { item ->
+            val parts = item.split("|")
+            HistoryAdapter.HistoryItem(
+                category = parts[0],
+                name = parts[1],
+                amount = formatCurrency(parts[2].toInt()),
+                icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName)
+            )
+        }
+
+        historyAdapter = HistoryAdapter(historyData)
+        binding.historyRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = historyAdapter
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        setupCategorySpinner()
+    }
+
+    private fun setBottomMarginForView(view: View) {
+        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNav.post {
+            val bottomNavHeight = bottomNav.height
+            val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+            layoutParams.bottomMargin = bottomNavHeight
+            view.layoutParams = layoutParams
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
