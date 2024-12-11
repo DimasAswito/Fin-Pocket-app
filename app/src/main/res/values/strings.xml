@@ -62,18 +62,18 @@
 
     <string-array name="history_data">
         <item>Bills|Electricity Bill|200000|@drawable/bills</item>
-        <item>Bills|Water Bill|150000|@drawable/bills</item>
-        <item>Groceries|Supermarket|500000|@drawable/groceries</item>
         <item>Groceries|Fruit Shop|300000|@drawable/groceries</item>
         <item>Transport|Fuel|250000|@drawable/transport</item>
-        <item>Transport|Public Transport|150000|@drawable/transport</item>
         <item>Entertainment|Movies|100000|@drawable/entertainment</item>
-        <item>Entertainment|Games|200000|@drawable/entertainment</item>
         <item>Healthcare|Doctor Visit|300000|@drawable/healthcare</item>
+        <item>Bills|Water Bill|150000|@drawable/bills</item>
+        <item>Entertainment|Games|200000|@drawable/entertainment</item>
         <item>Healthcare|Pharmacy|200000|@drawable/healthcare</item>
         <item>Education|School Fees|400000|@drawable/education</item>
-        <item>Education|Books|100000|@drawable/education</item>
         <item>Utilities|Internet|300000|@drawable/utilities</item>
+        <item>Transport|Public Transport|150000|@drawable/transport</item>
+        <item>Groceries|Supermarket|500000|@drawable/groceries</item>
+        <item>Education|Books|100000|@drawable/education</item>
         <item>Utilities|Gas|100000|@drawable/utilities</item>
         <item>Income|Salary|4000000|@drawable/income</item>
         <item>Income|Freelance|1200000|@drawable/income</item>
