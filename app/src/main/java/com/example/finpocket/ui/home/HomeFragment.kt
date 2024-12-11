@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.finpocket.R
 import com.example.finpocket.adapter.HistoryAdapter
 import com.example.finpocket.databinding.FragmentHomeBinding
+import com.example.finpocket.model.HistoryItem
+import com.example.finpocket.ui.detail.HistoryDetailModalFragment
 import com.example.finpocket.ui.history.HistoryFragment
 import com.example.finpocket.ui.plan.PlanFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -66,22 +68,28 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        // Ambil data history dari resources
         val historyData = resources.getStringArray(R.array.history_data).take(5).map { item ->
             val parts = item.split("|")
-            HistoryAdapter.HistoryItem(
+            HistoryItem(
                 category = parts[0],
                 name = parts[1],
                 amount = formatCurrency(parts[2]),
-                icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName)
+                icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName),
+                date = parts[4]
             )
         }
 
-        // Set up RecyclerView adapter
+        // Initialize adapter
         historyAdapter = HistoryAdapter(historyData)
+        historyAdapter.setOnItemClickListener { historyItem ->
+            val bottomSheetFragment = HistoryDetailModalFragment.newInstance(historyItem)
+            bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+        }
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.historyRecyclerView.adapter = historyAdapter
     }
+
+
 
     private fun formatCurrency(amount: String): String {
         // Fungsi untuk memformat nominal menjadi format mata uang
@@ -92,7 +100,6 @@ class HomeFragment : Fragment() {
             amount
         }
     }
-
 //    private fun setBottomMarginForView(view: View) {
 //        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
 //        bottomNav.post {

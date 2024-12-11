@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_profile"
             app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_navigation_home_to_historyDetailModalFragment"
+            app:destination="@id/historyDetailModalFragment" />
     </fragment>
 
     <fragment
@@ -65,5 +68,9 @@
             android:id="@+id/action_navigation_profile_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
+    <dialog
+        android:id="@+id/historyDetailModalFragment"
+        android:name="com.example.finpocket.ui.detail.HistoryDetailModalFragment"
+        android:label="HistoryDetailModalFragment" />
 
 </navigation>

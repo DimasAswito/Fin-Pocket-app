@@ -7,16 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finpocket.R
+import com.example.finpocket.model.HistoryItem
 
-class HistoryAdapter(private var items: List<HistoryItem>) :
+class HistoryAdapter(private val originalItems: List<HistoryItem>) :
     RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
-    data class HistoryItem(
-        val category: String,
-        val name: String,
-        val amount: String,
-        val icon: Int
-    )
+    private var items = originalItems.toList()
 
     inner class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val icon: ImageView = view.findViewById(R.id.itemIcon)
@@ -26,8 +22,7 @@ class HistoryAdapter(private var items: List<HistoryItem>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_history, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_history, parent, false)
         return HistoryViewHolder(view)
     }
 
@@ -37,6 +32,10 @@ class HistoryAdapter(private var items: List<HistoryItem>) :
         holder.name.text = item.name
         holder.category.text = item.category
         holder.amount.text = "Rp.${item.amount}"
+
+        holder.itemView.setOnClickListener {
+            itemClickListener?.invoke(item)
+        }
     }
 
     override fun getItemCount() = items.size
@@ -50,5 +49,9 @@ class HistoryAdapter(private var items: List<HistoryItem>) :
         notifyDataSetChanged()
     }
 
-    private val originalItems = items.toList()
+    fun setOnItemClickListener(listener: (HistoryItem) -> Unit) {
+        itemClickListener = listener
+    }
+
+    private var itemClickListener: ((HistoryItem) -> Unit)? = null
 }

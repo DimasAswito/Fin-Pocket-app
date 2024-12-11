@@ -18,6 +18,8 @@ import app.futured.donut.DonutSection
 import com.example.finpocket.R
 import com.example.finpocket.adapter.HistoryAdapter
 import com.example.finpocket.databinding.FragmentHistoryBinding
+import com.example.finpocket.model.HistoryItem
+import com.example.finpocket.ui.detail.HistoryDetailModalFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import java.text.NumberFormat
@@ -207,11 +209,12 @@ class HistoryFragment : Fragment() {
     private fun setupRecyclerView() {
         val historyData = resources.getStringArray(R.array.history_data).map { item ->
             val parts = item.split("|")
-            HistoryAdapter.HistoryItem(
+            HistoryItem(
                 category = parts[0],
                 name = parts[1],
                 amount = formatCurrency(parts[2].toInt()),
-                icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName)
+                icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName),
+                date = parts[4]
             )
         }
 
@@ -220,6 +223,28 @@ class HistoryFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = historyAdapter
         }
+
+        // Tambahkan klik listener untuk item
+        historyAdapter.setOnItemClickListener { historyItem ->
+            showHistoryDetail(historyItem)
+        }
+    }
+
+
+    private fun showHistoryDetail(historyItem: HistoryItem) {
+        val modalSheet = HistoryDetailModalFragment.newInstance(historyItem)
+        modalSheet.show(parentFragmentManager, "HistoryDetailModal")
+    }
+
+    private fun parseHistory(data: String): HistoryItem {
+        val parts = data.split("|")
+        return HistoryItem(
+            category = parts[0],
+            name = parts[1],
+            amount = formatCurrency(parts[2].toInt()),
+            icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName),
+            date = parts[4]
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

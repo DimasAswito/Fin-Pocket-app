@@ -61,21 +61,22 @@
     <color name="bills_colors">#69AAFF</color>
 
     <string-array name="history_data">
-        <item>Bills|Electricity Bill|200000|@drawable/bills</item>
-        <item>Groceries|Fruit Shop|300000|@drawable/groceries</item>
-        <item>Transport|Fuel|250000|@drawable/transport</item>
-        <item>Entertainment|Movies|100000|@drawable/entertainment</item>
-        <item>Healthcare|Doctor Visit|300000|@drawable/healthcare</item>
-        <item>Bills|Water Bill|150000|@drawable/bills</item>
-        <item>Entertainment|Games|200000|@drawable/entertainment</item>
-        <item>Healthcare|Pharmacy|200000|@drawable/healthcare</item>
-        <item>Education|School Fees|400000|@drawable/education</item>
-        <item>Utilities|Internet|300000|@drawable/utilities</item>
-        <item>Transport|Public Transport|150000|@drawable/transport</item>
-        <item>Groceries|Supermarket|500000|@drawable/groceries</item>
-        <item>Education|Books|100000|@drawable/education</item>
-        <item>Utilities|Gas|100000|@drawable/utilities</item>
-        <item>Income|Salary|4000000|@drawable/income</item>
-        <item>Income|Freelance|1200000|@drawable/income</item>
+        <item>Bills|Electricity Bill|200000|@drawable/bills|2024-12-01</item>
+        <item>Groceries|Fruit Shop|300000|@drawable/groceries|2024-12-02</item>
+        <item>Transport|Fuel|250000|@drawable/transport|2024-12-03</item>
+        <item>Entertainment|Movies|100000|@drawable/entertainment|2024-12-04</item>
+        <item>Healthcare|Doctor Visit|300000|@drawable/healthcare|2024-12-05</item>
+        <item>Bills|Water Bill|150000|@drawable/bills|2024-12-06</item>
+        <item>Entertainment|Games|200000|@drawable/entertainment|2024-12-07</item>
+        <item>Healthcare|Pharmacy|200000|@drawable/healthcare|2024-12-08</item>
+        <item>Education|School Fees|400000|@drawable/education|2024-12-09</item>
+        <item>Utilities|Internet|300000|@drawable/utilities|2024-12-10</item>
+        <item>Transport|Public Transport|150000|@drawable/transport|2024-12-11</item>
+        <item>Groceries|Supermarket|500000|@drawable/groceries|2024-12-12</item>
+        <item>Education|Books|100000|@drawable/education|2024-12-13</item>
+        <item>Utilities|Gas|100000|@drawable/utilities|2024-12-14</item>
+        <item>Income|Salary|4000000|@drawable/income|2024-12-15</item>
+        <item>Income|Freelance|1200000|@drawable/income|2024-12-16</item>
     </string-array>
+
 </resources>
