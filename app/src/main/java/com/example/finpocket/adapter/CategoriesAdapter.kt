@@ -26,7 +26,8 @@ class CategoriesAdapter(
         "Entertainment" to R.drawable.entertainment,
         "Healthcare" to R.drawable.healthcare,
         "Education" to R.drawable.education,
-        "Utilities" to R.drawable.utilities
+        "Utilities" to R.drawable.utilities,
+        "Savings" to R.drawable.saving
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {

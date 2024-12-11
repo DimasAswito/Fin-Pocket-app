@@ -35,7 +35,7 @@ class ManualPlanningActivity : AppCompatActivity() {
 
         val categories = listOf(
             "Bills", "Groceries", "Transport", "Entertainment",
-            "Healthcare", "Education", "Utilities"
+            "Healthcare", "Education", "Utilities", "Savings"
         )
 
         categoriesAdapter = CategoriesAdapter(categories) { selected ->

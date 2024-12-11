@@ -100,6 +100,7 @@ class HomeFragment : Fragment() {
             amount
         }
     }
+
 //    private fun setBottomMarginForView(view: View) {
 //        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
 //        bottomNav.post {

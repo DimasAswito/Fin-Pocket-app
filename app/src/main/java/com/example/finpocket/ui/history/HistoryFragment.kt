@@ -85,7 +85,8 @@ class HistoryFragment : Fragment() {
             DonutSection("Entertainment", Color.parseColor("#65B5FF"), 10f),
             DonutSection("Healthcare", Color.parseColor("#FFD958"), 10f),
             DonutSection("Education", Color.parseColor("#FFD958"), 10f),
-            DonutSection("Utilities", Color.parseColor("#FF7F7F"), 10f)
+            DonutSection("Utilities", Color.parseColor("#FF7F7F"), 5f),
+            DonutSection("Savings", Color.parseColor("#4CAF50"), 5f)
         )
         binding.donutChart.submitData(data)
         binding.donutCenterText.text = "Rp.3.400.000"
@@ -176,6 +177,7 @@ class HistoryFragment : Fragment() {
             "Healthcare",
             "Education",
             "Utilities",
+            "Savings",
             "Income"
         )
 
