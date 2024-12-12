@@ -1,340 +1,340 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/scrollViewHome"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollViewHome"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="100dp"
+    android:clipToPadding="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/md_theme_background">
 
-    <View
-        android:id="@+id/topView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/md_theme_primary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- TextView dan ikon notifikasi -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/container"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/greetingText"
+        <View
+            android:id="@+id/topView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:text="Welcome back"
-            android:textColor="@color/md_theme_secondaryFixed"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/notificationIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <ImageView
-            android:id="@+id/notificationIcon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="12dp"
-            android:contentDescription="Notification Icon"
-            android:src="@drawable/ic_baseline_notifications_none_24"
+            android:layout_height="0dp"
+            android:background="@color/md_theme_primary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Widget container -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="@id/topView"
-        app:layout_constraintTop_toBottomOf="@id/topView">
-
+        <!-- TextView dan ikon notifikasi -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/widget_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/md_theme_onPrimaryFixedVariant"
-            android:padding="16dp">
+            android:layout_marginTop="5dp"
+            app:layout_constraintBottom_toTopOf="@id/container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/containerTitle"
-                android:layout_width="wrap_content"
+                android:id="@+id/greetingText"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Budgets"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:text="Welcome back"
                 android:textColor="@color/md_theme_secondaryFixed"
-                android:textSize="18sp"
+                android:textSize="25sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/notificationIcon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/budgetRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/containerTitle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-                android:id="@+id/show_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="see more ..."
-                android:textColor="@color/md_theme_secondaryFixed"
-                android:textSize="18sp"
-                android:layout_marginTop="12dp"
+            <ImageView
+                android:id="@+id/notificationIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="Notification Icon"
+                android:src="@drawable/ic_baseline_notifications_none_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/budgetRecyclerView" />
-
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 
-    <!-- Total Monetary -->
-    <TextView
-        android:id="@+id/totalMonetaryText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Total Monetary"
-        android:textSize="18sp"
-        android:textColor="@color/black_text"
-        app:layout_constraintTop_toBottomOf="@id/container"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container_monetary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/totalMonetaryText">
-
-
-        <!-- CardView Income -->
+        <!-- Widget container -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/incomeCard"
-            android:layout_width="0dp"
+            android:id="@+id/container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/md_theme_primary"
-            android:padding="16dp"
-            app:cardCornerRadius="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/topView"
+            app:layout_constraintTop_toBottomOf="@id/topView">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/widget_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/md_theme_onPrimaryFixedVariant"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/containerTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Budgets"
+                    android:textColor="@color/md_theme_secondaryFixed"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/budgetRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/containerTitle" />
+
+                <TextView
+                    android:id="@+id/show_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="see more ..."
+                    android:textColor="@color/md_theme_secondaryFixed"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/budgetRecyclerView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Total Monetary -->
+        <TextView
+            android:id="@+id/totalMonetaryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Total Monetary"
+            android:textColor="@color/black_text"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/container" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!-- CardView for Income Content -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:backgroundTint="@color/md_theme_primary">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:id="@+id/incomeIcon"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginEnd="8dp"
-                            android:src="@drawable/add_income" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Income"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/incomeNominal"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 300.000"
-                                android:textColor="@android:color/white"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- CardView Add Income -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/addIncome"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#C8FFC6">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        android:gravity="center"
-                        android:text="Add Income +"
-                        android:textColor="#4F8C4D"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- CardView Spending -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/spendingCard"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_monetary"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/md_theme_errorContainer_mediumContrast"
-            android:padding="16dp"
-            app:cardCornerRadius="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totalMonetaryText">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+
+            <!-- CardView Income -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/incomeCard"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:backgroundTint="@color/md_theme_primary"
+                android:padding="16dp"
+                app:cardCornerRadius="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <!-- CardView for Spending Content -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:backgroundTint="@color/md_theme_errorContainer_mediumContrast">
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <!-- CardView for Income Content -->
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:id="@+id/spendingIcon"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginEnd="8dp"
-                            android:src="@drawable/add_spending" />
+                        android:layout_marginHorizontal="10dp"
+                        android:backgroundTint="@color/md_theme_primary">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="8dp">
 
-                            <TextView
+                            <ImageView
+                                android:id="@+id/incomeIcon"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/add_income" />
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Spending"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp" />
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/spendingNominal"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 300.000"
-                                android:textColor="@android:color/white"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Income"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/incomeNominal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 300.000"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
-                <!-- CardView Add Spending -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/addSpending"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#F4CECC">
-
-                    <TextView
+                    <!-- CardView Add Income -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/addIncome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        android:gravity="center"
-                        android:text="Add Spending +"
-                        android:textColor="@color/md_theme_errorContainer_mediumContrast"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                        android:backgroundTint="#C8FFC6">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:gravity="center"
+                            android:text="Add Income +"
+                            android:textColor="#4F8C4D"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CardView Spending -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/spendingCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/md_theme_errorContainer_mediumContrast"
+                android:padding="16dp"
+                app:cardCornerRadius="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- CardView for Spending Content -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:backgroundTint="@color/md_theme_errorContainer_mediumContrast">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:id="@+id/spendingIcon"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/add_spending" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Spending"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/spendingNominal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 300.000"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- CardView Add Spending -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/addSpending"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#F4CECC">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:gravity="center"
+                            android:text="Add Spending +"
+                            android:textColor="@color/md_theme_errorContainer_mediumContrast"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- History -->
+        <TextView
+            android:id="@+id/historyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="History"
+            android:textColor="@color/black_text"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/container_monetary" />
+
+        <!-- RecyclerView History -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/historyText" />
+
+        <TextView
+            android:id="@+id/seeMoreHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="150dp"
+            android:text="See More..."
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/historyRecyclerView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- History -->
-    <TextView
-        android:id="@+id/historyText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="History"
-        android:textSize="18sp"
-        android:textColor="@color/black_text"
-        app:layout_constraintTop_toBottomOf="@id/container_monetary"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- RecyclerView History -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/historyRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintTop_toBottomOf="@id/historyText"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <TextView
-        android:id="@+id/seeMoreHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="See More..."
-        android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@+id/historyRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="16sp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

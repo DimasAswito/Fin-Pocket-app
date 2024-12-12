@@ -147,6 +147,11 @@
     <color name="md_theme_primary">#508D4E</color>
     <color name="md_theme_primaryFixed">#508D4E</color>
 
+    <!--Plan Color-->
+    <color name="gray">#E0E0E0</color>
+    <color name="green">#66BB6A</color> <!-- Lembut tetapi tetap cerah -->
+    <color name="yellow">#FFD54F</color> <!-- Lembut tetapi tetap cerah -->
+    <color name="red">#EF5350</color> <!-- Lembut tetapi tetap cerah -->
 
 
 </resources>

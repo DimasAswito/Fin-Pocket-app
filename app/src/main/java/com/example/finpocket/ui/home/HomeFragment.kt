@@ -9,11 +9,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.finpocket.R
 import com.example.finpocket.adapter.HistoryAdapter
+import com.example.finpocket.adapter.PlanAdapter
 import com.example.finpocket.databinding.FragmentHomeBinding
 import com.example.finpocket.model.HistoryItem
+import com.example.finpocket.model.PlanItem
 import com.example.finpocket.ui.detail.HistoryDetailModalFragment
 import com.example.finpocket.ui.history.HistoryFragment
 import com.example.finpocket.ui.plan.PlanFragment
@@ -45,7 +48,7 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_plan)
         }
 
-
+        setupBudgetRecyclerView()
 
         // Set up click listener for "See More" TextView
         binding.seeMoreHistory.setOnClickListener {
@@ -89,7 +92,22 @@ class HomeFragment : Fragment() {
         binding.historyRecyclerView.adapter = historyAdapter
     }
 
+    private fun setupBudgetRecyclerView() {
+        val planItems = listOf(
+            PlanItem(R.drawable.bills, "Bills", 0.85),
+            PlanItem(R.drawable.utilities, "Lifestyle", 0.50),
+            PlanItem(R.drawable.transport, "Transport", 0.70),
+            PlanItem(R.drawable.groceries, "Grocery", 0.25),
+            PlanItem(R.drawable.healthcare, "Health", 0.40),
+            PlanItem(R.drawable.entertainment, "Entertainment", 0.90),
+            PlanItem(R.drawable.education, "Education", 0.15),
+            PlanItem(R.drawable.saving, "Savings", 0.60)
+        ).take(4) // Ambil hanya 4 data
 
+        val planAdapter = PlanAdapter(planItems)
+        binding.budgetRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.budgetRecyclerView.adapter = planAdapter
+    }
 
     private fun formatCurrency(amount: String): String {
         // Fungsi untuk memformat nominal menjadi format mata uang
