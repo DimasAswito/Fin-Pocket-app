@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.finpocket.R
 import com.example.finpocket.model.PlanItem
 
-class PlanAdapter(private val items: List<PlanItem>) :
-    RecyclerView.Adapter<PlanAdapter.PlanViewHolder>() {
+class PlanAdapter(
+    private val items: List<PlanItem>,
+    private val onItemClicked: (PlanItem) -> Unit // Callback untuk menangani klik
+) : RecyclerView.Adapter<PlanAdapter.PlanViewHolder>() {
 
     inner class PlanViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val categoryIcon: ImageView = view.findViewById(R.id.categoryIcon)
@@ -34,7 +36,6 @@ class PlanAdapter(private val items: List<PlanItem>) :
         val cardHeight = holder.itemView.context.resources.getDimension(R.dimen.card_height).toInt()
         val indicatorHeight = (item.percentage * cardHeight).toInt()
 
-        // Update height of indicator
         val layoutParams = holder.indicator.layoutParams
         layoutParams.height = indicatorHeight
         holder.indicator.layoutParams = layoutParams
@@ -47,6 +48,11 @@ class PlanAdapter(private val items: List<PlanItem>) :
                 else -> ContextCompat.getColor(holder.itemView.context, R.color.red)
             }
         )
+
+        // Handle item click
+        holder.itemView.setOnClickListener {
+            onItemClicked(item)
+        }
     }
 
     override fun getItemCount(): Int = items.size

@@ -149,7 +149,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -190,9 +190,9 @@
                                     android:id="@+id/incomeNominal"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Rp. 300.000"
+                                    android:text="Rp. 5.200.000"
                                     android:textColor="@android:color/white"
-                                    android:textSize="16sp"
+                                    android:textSize="15sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
@@ -231,7 +231,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -243,7 +243,7 @@
                         android:backgroundTint="@color/md_theme_errorContainer_mediumContrast">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:orientation="horizontal"
@@ -272,9 +272,9 @@
                                     android:id="@+id/spendingNominal"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Rp. 300.000"
+                                    android:text="Rp. 3.400.000"
                                     android:textColor="@android:color/white"
-                                    android:textSize="16sp"
+                                    android:textSize="15sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
@@ -330,7 +330,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="150dp"
-            android:text="See More..."
+            android:text="See more ..."
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"

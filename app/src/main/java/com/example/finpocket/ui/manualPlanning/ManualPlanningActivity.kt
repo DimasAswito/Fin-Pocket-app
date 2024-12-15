@@ -52,7 +52,7 @@ class ManualPlanningActivity : AppCompatActivity() {
 
         // Navigasi ke RecomendationPlanningActivity saat tombol AI Recommendation diklik
         aiRecommendationButton.setOnClickListener {
-            val intent = Intent(this, RecomendationPlanningActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 

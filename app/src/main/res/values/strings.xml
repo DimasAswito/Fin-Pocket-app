@@ -63,7 +63,6 @@
     <color name="savings_colors">#4CAF50</color>
 
     <string-array name="history_data">
-        <item>Bills|Electricity Bill|200000|@drawable/bills|2024-12-01</item>
         <item>Groceries|Fruit Shop|300000|@drawable/groceries|2024-12-02</item>
         <item>Transport|Fuel|250000|@drawable/transport|2024-12-03</item>
         <item>Entertainment|Movies|100000|@drawable/entertainment|2024-12-04</item>
@@ -78,8 +77,9 @@
         <item>Education|Books|100000|@drawable/education|2024-12-13</item>
         <item>Utilities|Gas|30000|@drawable/utilities|2024-12-14</item>
         <item>Savings|Investment|70000|@drawable/saving|2024-12-14</item>
-        <item>Income|Salary|4000000|@drawable/income|2024-12-15</item>
-        <item>Income|Freelance|1200000|@drawable/income|2024-12-16</item>
+<!--        <item>Income|Salary|4000000|@drawable/income|2024-12-15</item>-->
+<!--        <item>Income|Freelance|1200000|@drawable/income|2024-12-16</item>-->
+        <item>Bills|Electricity Bill|200000|@drawable/bills|2024-12-12</item>
     </string-array>
 
 </resources>
