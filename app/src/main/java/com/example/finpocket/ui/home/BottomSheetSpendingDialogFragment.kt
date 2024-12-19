@@ -78,7 +78,7 @@ class BottomSheetSpendingDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun getCurrentDate(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         return dateFormat.format(Date())  // Get current date in yyyy-MM-dd format
     }
 }
