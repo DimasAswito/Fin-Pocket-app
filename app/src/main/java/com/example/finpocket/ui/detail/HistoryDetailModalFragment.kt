@@ -47,10 +47,11 @@ class HistoryDetailModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun formatDate(date: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
         val parsedDate = inputFormat.parse(date)
         return outputFormat.format(parsedDate!!)
     }
 }
+
 

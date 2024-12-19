@@ -1,5 +1,6 @@
 package com.example.finpocket.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,6 +33,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var historyAdapter: HistoryAdapter
+    private val historyItems = mutableListOf<HistoryItem>()  // Daftar untuk menyimpan data history
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +44,15 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        setBottomMarginForView(binding.scrollViewHome)
-
-        // Set up RecyclerView
         setupRecyclerView()
+
+        val incomeNominalTextView = root.findViewById<TextView>(R.id.incomeNominal)
+
+        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val income = sharedPreferences.getInt("income", 0) // Default 0 jika tidak ditemukan
+
+        val formattedIncome = formatToRupiah(income)
+        incomeNominalTextView.text = "$formattedIncome"
 
         binding.showMore.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_plan)
@@ -72,27 +79,43 @@ class HomeFragment : Fragment() {
 
         return root
     }
+    fun formatToRupiah(amount: Int): String {
+        val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        return formatter.format(amount).replace("Rp", "Rp ").replace(",00", "")
+    }
+
+    fun updateIncomeDisplay(newIncome: Int) {
+        val incomeNominalTextView = binding.root.findViewById<TextView>(R.id.incomeNominal)
+
+        // Format dan tampilkan income yang baru
+        val formattedIncome = formatToRupiah(newIncome)
+        incomeNominalTextView.text = formattedIncome
+    }
 
     private fun setupRecyclerView() {
-        val historyData = resources.getStringArray(R.array.history_data).take(5).map { item ->
-            val parts = item.split("|")
-            HistoryItem(
-                category = parts[0],
-                name = parts[1],
-                amount = formatCurrency(parts[2]),
-                icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName),
-                date = parts[4]
-            )
+        historyAdapter = HistoryAdapter(historyItems) { historyItem ->
+            // Ketika item diklik, panggil fragment HistoryDetailModalFragment
+            val detailFragment = HistoryDetailModalFragment.newInstance(historyItem)
+            detailFragment.show(parentFragmentManager, "HistoryDetailModal")
         }
 
-        // Initialize adapter
-        historyAdapter = HistoryAdapter(historyData)
-        historyAdapter.setOnItemClickListener { historyItem ->
-            val bottomSheetFragment = HistoryDetailModalFragment.newInstance(historyItem)
-            bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
-        }
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.historyRecyclerView.adapter = historyAdapter
+    }
+
+    fun addIncomeToHistory(name: String, amount: Int, date: String) {
+        // Menambahkan item income baru ke daftar history
+        val incomeItem = HistoryItem(
+            category = "Income",  // Kategori income
+            name = name,
+            amount = amount,  // Format menjadi Rupiah
+            icon = R.drawable.income,  // Gunakan icon income yang sesuai
+            date = date  // Menambahkan tanggal saat ini
+        )
+
+        // Tambahkan item ke list dan beri tahu adapter untuk diperbarui
+        historyItems.add(0, incomeItem)  // Menambahkan di awal
+        historyAdapter.notifyItemInserted(0)  // Update RecyclerView
     }
 
     private fun setupBudgetRecyclerView() {
@@ -148,16 +171,6 @@ class HomeFragment : Fragment() {
             amount
         }
     }
-
-//    private fun setBottomMarginForView(view: View) {
-//        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
-//        bottomNav.post {
-//            val bottomNavHeight = bottomNav.height
-//            val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-//            layoutParams.bottomMargin = bottomNavHeight
-//            view.layoutParams = layoutParams
-//        }
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

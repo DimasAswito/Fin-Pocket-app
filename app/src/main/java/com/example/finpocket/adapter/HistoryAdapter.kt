@@ -8,18 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finpocket.R
 import com.example.finpocket.model.HistoryItem
+import java.text.NumberFormat
+import java.util.Locale
 
-class HistoryAdapter(private val originalItems: List<HistoryItem>) :
-    RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
-
-    private var items = originalItems.toList()
-
-    inner class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val icon: ImageView = view.findViewById(R.id.itemIcon)
-        val name: TextView = view.findViewById(R.id.itemName)
-        val category: TextView = view.findViewById(R.id.itemCategory)
-        val amount: TextView = view.findViewById(R.id.itemAmount)
-    }
+class HistoryAdapter(
+    private val historyItems: List<HistoryItem>,
+    private val onItemClick: (HistoryItem) -> Unit
+) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_history, parent, false)
@@ -27,31 +22,31 @@ class HistoryAdapter(private val originalItems: List<HistoryItem>) :
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        val item = items[position]
-        holder.icon.setImageResource(item.icon)
-        holder.name.text = item.name
-        holder.category.text = item.category
-        holder.amount.text = "Rp.${item.amount}"
+        val historyItem = historyItems[position]
+        holder.itemName.text = historyItem.name
+        holder.itemCategory.text = historyItem.category
+        holder.itemAmount.text = formatToRupiah(historyItem.amount)
+        holder.itemIcon.setImageResource(historyItem.icon)
 
         holder.itemView.setOnClickListener {
-            itemClickListener?.invoke(item)
+            onItemClick(historyItem)  // Memanggil listener ketika item diklik
         }
     }
 
-    override fun getItemCount() = items.size
-
-    fun filterByCategory(category: String?) {
-        items = if (category.isNullOrEmpty() || category == "Choose Category") {
-            originalItems
-        } else {
-            originalItems.filter { it.category == category }
-        }
-        notifyDataSetChanged()
+    override fun getItemCount(): Int {
+        return historyItems.size
     }
 
-    fun setOnItemClickListener(listener: (HistoryItem) -> Unit) {
-        itemClickListener = listener
+    class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val itemIcon: ImageView = itemView.findViewById(R.id.itemIcon)
+        val itemName: TextView = itemView.findViewById(R.id.itemName)
+        val itemCategory: TextView = itemView.findViewById(R.id.itemCategory)
+        val itemAmount: TextView = itemView.findViewById(R.id.itemAmount)
     }
 
-    private var itemClickListener: ((HistoryItem) -> Unit)? = null
+    private fun formatToRupiah(amount: Int): String {
+        val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        return formatter.format(amount).replace("Rp", "Rp ").replace(",00", "")
+    }
 }
+

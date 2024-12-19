@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class HistoryItem(
     val category: String,
     val name: String,
-    val amount: String,
+    val amount: Int,
     val icon: Int,
     val date: String
 ) : Parcelable

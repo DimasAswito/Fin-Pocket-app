@@ -30,6 +30,7 @@ class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
     private lateinit var historyAdapter: HistoryAdapter
+    private val historyItems = mutableListOf<HistoryItem>()  // Daftar untuk menyimpan data history
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -191,15 +192,15 @@ class HistoryFragment : Fragment() {
         binding.categorySpinner.adapter = adapter
 
         // Listener untuk item yang dipilih
-        binding.categorySpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val selectedCategory = resources.getStringArray(R.array.categories)[position]
-                    historyAdapter.filterByCategory(if (position == 0) null else selectedCategory)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
+//        binding.categorySpinner.onItemSelectedListener =
+//            object : AdapterView.OnItemSelectedListener {
+//                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                    val selectedCategory = resources.getStringArray(R.array.categories)[position]
+//                    historyAdapter.filterByCategory(if (position == 0) null else selectedCategory)
+//                }
+//
+//                override fun onNothingSelected(parent: AdapterView<*>?) {}
+//            }
 
     }
     private fun formatCurrency(amount: Int): String {
@@ -207,29 +208,34 @@ class HistoryFragment : Fragment() {
         val formatter = NumberFormat.getNumberInstance(localeID)
         return formatter.format(amount)
     }
-
+    fun formatToRupiah(amount: Int): String {
+        val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        return formatter.format(amount).replace("Rp", "Rp ").replace(",00", "")
+    }
     private fun setupRecyclerView() {
-        val historyData = resources.getStringArray(R.array.history_data).map { item ->
-            val parts = item.split("|")
-            HistoryItem(
-                category = parts[0],
-                name = parts[1],
-                amount = formatCurrency(parts[2].toInt()),
-                icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName),
-                date = parts[4]
-            )
+        historyAdapter = HistoryAdapter(historyItems) { historyItem ->
+            // Ketika item diklik, panggil fragment HistoryDetailModalFragment
+            val detailFragment = HistoryDetailModalFragment.newInstance(historyItem)
+            detailFragment.show(parentFragmentManager, "HistoryDetailModal")
         }
 
-        historyAdapter = HistoryAdapter(historyData)
-        binding.historyRecyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = historyAdapter
-        }
+        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.historyRecyclerView.adapter = historyAdapter
+    }
 
-        // Tambahkan klik listener untuk item
-        historyAdapter.setOnItemClickListener { historyItem ->
-            showHistoryDetail(historyItem)
-        }
+    fun addIncomeToHistory(name: String, amount: Int, date: String) {
+        // Menambahkan item income baru ke daftar history
+        val incomeItem = HistoryItem(
+            category = "Income",  // Kategori income
+            name = name,
+            amount = amount,  // Format menjadi Rupiah
+            icon = R.drawable.income,  // Gunakan icon income yang sesuai
+            date = date  // Menambahkan tanggal saat ini
+        )
+
+        // Tambahkan item ke list dan beri tahu adapter untuk diperbarui
+        historyItems.add(0, incomeItem)  // Menambahkan di awal
+        historyAdapter.notifyItemInserted(0)  // Update RecyclerView
     }
 
 
@@ -243,7 +249,7 @@ class HistoryFragment : Fragment() {
         return HistoryItem(
             category = parts[0],
             name = parts[1],
-            amount = formatCurrency(parts[2].toInt()),
+            amount = (parts[2].toInt()),
             icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName),
             date = parts[4]
         )
