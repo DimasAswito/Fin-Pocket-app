@@ -43,7 +43,7 @@ class PlanFragment : Fragment() {
             PlanItem(R.drawable.healthcare, "Healthcare", 0.40, 500000),
             PlanItem(R.drawable.entertainment, "Entertainment", 0.90, 300000),
             PlanItem(R.drawable.education, "Education", 0.15, 500000),
-            PlanItem(R.drawable.saving, "Savings", 0.60,70000)
+            PlanItem(R.drawable.savings, "Savings", 0.60,70000)
         )
 
         val adapter = PlanAdapter(planItems) { planItem ->

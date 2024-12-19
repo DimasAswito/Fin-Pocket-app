@@ -4,12 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finpocket.R
-import com.example.finpocket.model.Category
 
 class CategoriesAdapter(
     private val categories: List<String>,
@@ -27,7 +24,7 @@ class CategoriesAdapter(
         "Healthcare" to R.drawable.healthcare,
         "Education" to R.drawable.education,
         "Utilities" to R.drawable.utilities,
-        "Savings" to R.drawable.saving
+        "Savings" to R.drawable.savings
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {

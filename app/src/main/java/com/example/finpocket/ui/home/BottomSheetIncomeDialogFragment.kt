@@ -36,29 +36,20 @@ class BottomSheetIncomeDialogFragment : BottomSheetDialogFragment() {
             val amount = amountEditText.text.toString()
 
             if (incomeName.isNotEmpty() && amount.isNotEmpty()) {
-                // Mengambil nilai income yang sudah ada
                 val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                 val existingIncome = sharedPreferences.getInt("income", 0)
 
-                // Menambahkan income baru
-                val newIncome = existingIncome + amount.toInt()
+                val newIncome = existingIncome
 
-                // Menyimpan nilai income baru ke SharedPreferences
                 val editor = sharedPreferences.edit()
                 editor.putInt("income", newIncome)
                 editor.apply()
 
-                // Tampilkan toast untuk konfirmasi
-                Toast.makeText(context, "Income Saved: $incomeName - Rp ${formatToRupiah(newIncome)}", Toast.LENGTH_SHORT).show()
-
-                // Tutup bottom sheet
                 dismiss()
 
-                // Memperbarui tampilan income di HomeFragment
                 val homeFragment = parentFragment as? HomeFragment
                 homeFragment?.updateIncomeDisplay(newIncome)
 
-                // Menambahkan income baru ke RecyclerView dengan tanggal hari ini
                 val currentDate = getCurrentDate()
                 homeFragment?.addIncomeToHistory(incomeName, amount.toInt(), currentDate)
 
@@ -75,7 +66,6 @@ class BottomSheetIncomeDialogFragment : BottomSheetDialogFragment() {
         return formatter.format(amount).replace("Rp", "Rp ").replace(",00", "")
     }
 
-    // Fungsi untuk mendapatkan tanggal saat ini dalam format "dd-MM-yyyy"
     private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale("id", "ID"))
         return dateFormat.format(Date())

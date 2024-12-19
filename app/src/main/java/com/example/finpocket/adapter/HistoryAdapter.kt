@@ -12,9 +12,15 @@ import java.text.NumberFormat
 import java.util.Locale
 
 class HistoryAdapter(
-    private val historyItems: List<HistoryItem>,
+    private var historyItems: List<HistoryItem>,
     private val onItemClick: (HistoryItem) -> Unit
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+
+    private var allHistoryItems = listOf<HistoryItem>()  // Menyimpan semua data untuk reset filter
+
+    init {
+        allHistoryItems = historyItems  // Menyimpan semua data untuk reset filter
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_history, parent, false)
@@ -35,6 +41,16 @@ class HistoryAdapter(
 
     override fun getItemCount(): Int {
         return historyItems.size
+    }
+
+    // Filter historyItems berdasarkan kategori
+    fun filterByCategory(category: String?) {
+        historyItems = if (category == null || category == "All Category") {
+            allHistoryItems  // Tampilkan semua item jika tidak ada kategori yang dipilih
+        } else {
+            allHistoryItems.filter { it.category == category }  // Filter berdasarkan kategori
+        }
+        notifyDataSetChanged()  // Update RecyclerView dengan data yang difilter
     }
 
     class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -22,6 +21,8 @@ import com.example.finpocket.model.HistoryItem
 import com.example.finpocket.ui.detail.HistoryDetailModalFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -47,6 +48,42 @@ class HistoryFragment : Fragment() {
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        loadHistoryFromSharedPreferences()  // Load history when the fragment is created
+        setupCategorySpinner()
+    }
+
+    private fun loadHistoryFromSharedPreferences() {
+        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val jsonHistory = sharedPreferences.getString("history", null)
+
+        if (jsonHistory != null) {
+            val type = object : TypeToken<List<HistoryItem>>() {}.type
+            val allHistoryItems: List<HistoryItem> = gson.fromJson(jsonHistory, type)
+
+            // Update the historyItems list and RecyclerView
+            historyItems.clear()
+            historyItems.addAll(allHistoryItems)
+            historyAdapter.notifyDataSetChanged()
+        }
+    }
+
+
+    private fun setupRecyclerView() {
+        historyAdapter = HistoryAdapter(historyItems) { historyItem ->
+            // Ketika item diklik, panggil fragment HistoryDetailModalFragment
+            val detailFragment = HistoryDetailModalFragment.newInstance(historyItem)
+            detailFragment.show(parentFragmentManager, "HistoryDetailModal")
+        }
+
+        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.historyRecyclerView.adapter = historyAdapter
+    }
+
+
     private fun setupMonthSpinner() {
         val months = resources.getStringArray(R.array.months)
         val adapter = ArrayAdapter(
@@ -56,7 +93,12 @@ class HistoryFragment : Fragment() {
         binding.monthSpinner.adapter = adapter
 
         binding.monthSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val selectedMonth = months[position]
                 if (selectedMonth == "December") {
                     updateDonutChartForIncome()
@@ -101,7 +143,6 @@ class HistoryFragment : Fragment() {
     }
 
 
-
     private fun setupTabs() {
         // Tambahkan tab ke TabLayout
         val tabLayout = binding.tabLayout
@@ -114,8 +155,7 @@ class HistoryFragment : Fragment() {
             val tabView: View = (tabLayout.getChildAt(0) as ViewGroup).getChildAt(i)
             tabView.requestLayout() // Pastikan layout diperbarui
             ViewCompat.setBackground(
-                tabView,
-                setTabBackground(requireContext())
+                tabView, setTabBackground(requireContext())
             ) // Tambahkan background state
             ViewCompat.setPaddingRelative(
                 tabView,
@@ -170,7 +210,7 @@ class HistoryFragment : Fragment() {
     private fun setupCategorySpinner() {
         // Daftar kategori kebutuhan hidup
         val categories = listOf(
-            "Choose Category",
+            "All Category",
             "Bills",
             "Groceries",
             "Transport",
@@ -192,43 +232,36 @@ class HistoryFragment : Fragment() {
         binding.categorySpinner.adapter = adapter
 
         // Listener untuk item yang dipilih
-//        binding.categorySpinner.onItemSelectedListener =
-//            object : AdapterView.OnItemSelectedListener {
-//                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                    val selectedCategory = resources.getStringArray(R.array.categories)[position]
-//                    historyAdapter.filterByCategory(if (position == 0) null else selectedCategory)
-//                }
-//
-//                override fun onNothingSelected(parent: AdapterView<*>?) {}
-//            }
+        binding.categorySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selectedCategory = categories[position]
+                    historyAdapter.filterByCategory(
+                        if (position == 0) null else selectedCategory
+                    )
+                }
 
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
     }
+
+
     private fun formatCurrency(amount: Int): String {
         val localeID = Locale("in", "ID") // Gunakan locale Indonesia
         val formatter = NumberFormat.getNumberInstance(localeID)
         return formatter.format(amount)
     }
+
     fun formatToRupiah(amount: Int): String {
         val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
         return formatter.format(amount).replace("Rp", "Rp ").replace(",00", "")
-    }
-    private fun setupRecyclerView() {
-        historyAdapter = HistoryAdapter(historyItems) { historyItem ->
-            // Ketika item diklik, panggil fragment HistoryDetailModalFragment
-            val detailFragment = HistoryDetailModalFragment.newInstance(historyItem)
-            detailFragment.show(parentFragmentManager, "HistoryDetailModal")
-        }
-
-        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.historyRecyclerView.adapter = historyAdapter
     }
 
     fun addIncomeToHistory(name: String, amount: Int, date: String) {
         // Menambahkan item income baru ke daftar history
         val incomeItem = HistoryItem(
             category = "Income",  // Kategori income
-            name = name,
-            amount = amount,  // Format menjadi Rupiah
+            name = name, amount = amount,  // Format menjadi Rupiah
             icon = R.drawable.income,  // Gunakan icon income yang sesuai
             date = date  // Menambahkan tanggal saat ini
         )
@@ -250,16 +283,15 @@ class HistoryFragment : Fragment() {
             category = parts[0],
             name = parts[1],
             amount = (parts[2].toInt()),
-            icon = resources.getIdentifier(parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName),
+            icon = resources.getIdentifier(
+                parts[3].replace("@drawable/", ""),
+                "drawable",
+                requireContext().packageName
+            ),
             date = parts[4]
         )
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
-        setupCategorySpinner()
-    }
 
     private fun setBottomMarginForView(view: View) {
         val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)

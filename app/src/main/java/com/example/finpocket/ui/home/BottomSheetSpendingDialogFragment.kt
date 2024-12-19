@@ -9,9 +9,9 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import com.example.finpocket.R
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.example.finpocket.databinding.BottomSheetSpendingBinding
 import com.example.finpocket.model.HistoryItem
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -22,8 +22,7 @@ class BottomSheetSpendingDialogFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = BottomSheetSpendingBinding.inflate(inflater, container, false)
 
@@ -31,7 +30,8 @@ class BottomSheetSpendingDialogFragment : BottomSheetDialogFragment() {
         val categorySpinner: Spinner = binding.categorySpending
         val categories = resources.getStringArray(R.array.spending_categories)
 
-        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
+        val categoryAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = categoryAdapter
 
@@ -55,7 +55,11 @@ class BottomSheetSpendingDialogFragment : BottomSheetDialogFragment() {
                     category = category,
                     name = name,
                     amount = amount,  // Save as string in the HistoryItem
-                    icon = resources.getIdentifier(category.toLowerCase(), "drawable", requireContext().packageName),  // Get icon from drawable
+                    icon = resources.getIdentifier(
+                        category.lowercase(Locale.getDefault()),
+                        "drawable",
+                        requireContext().packageName
+                    ),  // Get icon from drawable
                     date = getCurrentDate()  // Save current date
                 )
 
@@ -63,11 +67,16 @@ class BottomSheetSpendingDialogFragment : BottomSheetDialogFragment() {
                 val homeFragment = parentFragment as HomeFragment
                 homeFragment.addSpendingToHistory(spendingItem)
 
+                // Update the spending display in HomeFragment
+                homeFragment.updateSpendingDisplay(currentSpending + amount)
+
                 dismiss()
             } else {
-                Toast.makeText(requireContext(), "Amount cannot be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Amount cannot be empty", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
+
 
         return binding.root
     }

@@ -1,7 +1,6 @@
 package com.example.finpocket.ui.home
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,10 +19,8 @@ import com.example.finpocket.databinding.FragmentHomeBinding
 import com.example.finpocket.model.HistoryItem
 import com.example.finpocket.model.PlanItem
 import com.example.finpocket.ui.detail.HistoryDetailModalFragment
-import com.example.finpocket.ui.history.HistoryFragment
-import com.example.finpocket.ui.plan.PlanFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
@@ -95,7 +92,13 @@ class HomeFragment : Fragment() {
         incomeNominalTextView.text = formattedIncome
     }
 
+    fun updateSpendingDisplay(newSpending: Int) {
+        val formattedSpending = formatToRupiah(newSpending)
+        binding.spendingNominal.text = formattedSpending
+    }
+
     private fun setupRecyclerView() {
+
         historyAdapter = HistoryAdapter(historyItems) { historyItem ->
             // Ketika item diklik, panggil fragment HistoryDetailModalFragment
             val detailFragment = HistoryDetailModalFragment.newInstance(historyItem)
@@ -106,26 +109,56 @@ class HomeFragment : Fragment() {
         binding.historyRecyclerView.adapter = historyAdapter
     }
 
+    // Menambahkan income
     fun addIncomeToHistory(name: String, amount: Int, date: String) {
-        // Menambahkan item income baru ke daftar history
         val incomeItem = HistoryItem(
-            category = "Income",  // Kategori income
+            category = "Income",
             name = name,
-            amount = amount,  // Format menjadi Rupiah
-            icon = R.drawable.income,  // Gunakan icon income yang sesuai
-            date = date  // Menambahkan tanggal saat ini
+            amount = amount,
+            icon = R.drawable.income,
+            date = date
         )
 
-        // Tambahkan item ke list dan beri tahu adapter untuk diperbarui
-        historyItems.add(0, incomeItem)  // Menambahkan di awal
-        historyAdapter.notifyItemInserted(0)  // Update RecyclerView
+        addHistoryItemToHistory(incomeItem, "income")
     }
 
+    // Menambahkan spending
     fun addSpendingToHistory(spendingItem: HistoryItem) {
-        // Add the new spending item to the history list
-        historyItems.add(0, spendingItem)  // Add to the top
-        historyAdapter.notifyItemInserted(0)  // Notify adapter to update RecyclerView
+        addHistoryItemToHistory(spendingItem, "spending")
     }
+
+    fun addHistoryItemToHistory(item: HistoryItem, type: String) {
+        // Tambahkan item ke list dan beri tahu adapter untuk diperbarui
+        historyItems.add(0, item)  // Menambahkan di awal
+
+        historyAdapter.notifyDataSetChanged()  // Update RecyclerView
+
+        // Simpan history ke SharedPreferences
+        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val editor = sharedPreferences.edit()
+
+        // Simpan data history secara umum
+        val jsonHistory = gson.toJson(historyItems)
+        editor.putString("history", jsonHistory)
+
+        val currentAmount = sharedPreferences.getInt(type, 0)
+
+        editor.putInt(type, currentAmount + item.amount)
+
+        // Simpan perubahan
+        editor.apply()
+
+        // Update tampilan income atau spending
+        if (type == "income") {
+            updateIncomeDisplay(currentAmount + item.amount) // Pastikan tampilan sesuai dengan nilai yang benar
+        } else if (type == "spending") {
+            updateSpendingDisplay(currentAmount + item.amount)
+        }
+    }
+
+
+
 
     private fun setupBudgetRecyclerView() {
         val planItems = listOf(
@@ -140,7 +173,7 @@ class HomeFragment : Fragment() {
             PlanItem(R.drawable.healthcare, "Healthcare", 0.40, 500000),
             PlanItem(R.drawable.entertainment, "Entertainment", 0.90, 300000),
             PlanItem(R.drawable.education, "Education", 0.15, 500000),
-            PlanItem(R.drawable.saving, "Savings", 0.60,70000)
+            PlanItem(R.drawable.savings, "Savings", 0.60,70000)
         ).take(4) // Ambil hanya 4 data
 
         val adapter = PlanAdapter(planItems) { planItem ->
