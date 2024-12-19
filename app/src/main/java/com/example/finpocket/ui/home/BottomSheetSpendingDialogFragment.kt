@@ -60,7 +60,8 @@ class BottomSheetSpendingDialogFragment : BottomSheetDialogFragment() {
                         "drawable",
                         requireContext().packageName
                     ),  // Get icon from drawable
-                    date = getCurrentDate()  // Save current date
+                    date = getCurrentDate(),  // Save current date
+                    type = "spending"
                 )
 
                 // Add to history and update RecyclerView

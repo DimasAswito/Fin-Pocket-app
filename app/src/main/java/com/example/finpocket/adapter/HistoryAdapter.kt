@@ -64,5 +64,10 @@ class HistoryAdapter(
         val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
         return formatter.format(amount).replace("Rp", "Rp ").replace(",00", "")
     }
+
+    fun getHistoryItems(): List<HistoryItem> {
+        return historyItems
+    }
+
 }
 

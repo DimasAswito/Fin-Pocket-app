@@ -56,7 +56,8 @@ class HistoryFragment : Fragment() {
     }
 
     private fun loadHistoryFromSharedPreferences() {
-        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
         val gson = Gson()
         val jsonHistory = sharedPreferences.getString("history", null)
 
@@ -70,7 +71,6 @@ class HistoryFragment : Fragment() {
             historyAdapter.notifyDataSetChanged()
         }
     }
-
 
     private fun setupRecyclerView() {
         historyAdapter = HistoryAdapter(historyItems) { historyItem ->
@@ -94,10 +94,7 @@ class HistoryFragment : Fragment() {
 
         binding.monthSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
                 val selectedMonth = months[position]
                 if (selectedMonth == "December") {
@@ -112,27 +109,23 @@ class HistoryFragment : Fragment() {
     }
 
     private fun updateDonutChartForIncome() {
-        val data = listOf(
-            DonutSection("Income", Color.parseColor("#7DFFB1"), 100f)
-        )
-        binding.donutChart.submitData(data)
-        binding.donutCenterText.text = "Rp.5.200.000"
-        binding.donutCenterText.setTextColor(Color.GRAY)
-    }
+        // Ambil nilai income dari SharedPreferences
+        val sharedPreferences =
+            requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val income = sharedPreferences.getInt("income", 0)
 
-    private fun updateDonutChartForSpending() {
+        // Buat data untuk donut chart
         val data = listOf(
-            DonutSection("Bills", Color.parseColor("#69AAFF"), 20f),
-            DonutSection("Groceries", Color.parseColor("#FFA274"), 25f),
-            DonutSection("Transport", Color.parseColor("#C399FF"), 15f),
-            DonutSection("Entertainment", Color.parseColor("#65B5FF"), 10f),
-            DonutSection("Healthcare", Color.parseColor("#FFD958"), 10f),
-            DonutSection("Education", Color.parseColor("#FFD958"), 10f),
-            DonutSection("Utilities", Color.parseColor("#FF7F7F"), 5f),
-            DonutSection("Savings", Color.parseColor("#4CAF50"), 5f)
+            DonutSection(
+                "Income",
+                Color.parseColor("#7DFFB1"),
+                100f
+            )  // Anda bisa menyesuaikan persentase jika perlu
         )
         binding.donutChart.submitData(data)
-        binding.donutCenterText.text = "Rp.3.400.000"
+
+        // Update tampilan dengan nilai income
+        binding.donutCenterText.text = "${formatToRupiah(income)}"
         binding.donutCenterText.setTextColor(Color.GRAY)
     }
 
@@ -141,6 +134,7 @@ class HistoryFragment : Fragment() {
         binding.donutCenterText.text = "No Data"
         binding.donutCenterText.setTextColor(Color.GRAY)
     }
+
 
 
     private fun setupTabs() {
@@ -172,8 +166,14 @@ class HistoryFragment : Fragment() {
                 // Tab yang dipilih
                 val selectedPosition = tab?.position
                 when (selectedPosition) {
-                    0 -> updateDonutChartForIncome() // Income
-                    1 -> updateDonutChartForSpending() // Spending
+                    0 -> {
+                        clearDonutChart() // Pastikan chart dibersihkan sebelum update income
+                        updateDonutChartForIncome() // Income
+                    }
+                    1 -> {
+                        clearDonutChart() // Pastikan chart dibersihkan sebelum update spending
+                        updateDonutChartForSpending() // Spending
+                    }
                 }
             }
 
@@ -190,6 +190,55 @@ class HistoryFragment : Fragment() {
         tabLayout.getTabAt(0)?.select()
         updateDonutChartForIncome()
     }
+
+
+    private fun updateDonutChartForSpending() {
+        // Ambil nilai income dari SharedPreferences
+        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val income = sharedPreferences.getInt("income", 0)
+
+        // Ambil data history dari RecyclerView (historyItems)
+        val historyItems = historyAdapter.getHistoryItems() // Pastikan adapter memiliki metode ini
+        val categorySpending = mutableMapOf<String, Int>()
+
+        // Hitung total spending per kategori
+        for (item in historyItems) {
+            if (item.amount > 0 && item.type == "spending") { // Periksa apakah item merupakan pengeluaran
+                categorySpending[item.category] = categorySpending.getOrDefault(item.category, 0) + item.amount
+            }
+        }
+
+        // Tentukan kategori dan persentase yang digunakan untuk chart
+        val categories = listOf(
+            "Bills" to categorySpending.getOrDefault("Bills", 0),
+            "Groceries" to categorySpending.getOrDefault("Groceries", 0),
+            "Transport" to categorySpending.getOrDefault("Transport", 0),
+            "Entertainment" to categorySpending.getOrDefault("Entertainment", 0),
+            "Healthcare" to categorySpending.getOrDefault("Healthcare", 0),
+            "Education" to categorySpending.getOrDefault("Education", 0),
+            "Utilities" to categorySpending.getOrDefault("Utilities", 0),
+            "Savings" to categorySpending.getOrDefault("Savings", 0)
+        )
+
+        // Hanya tampilkan kategori yang memiliki spending lebih dari 0
+        val data = categories.filter { it.second > 0 }
+            .map { (category, amount) ->
+                val percentage = (amount.toFloat() / income.toFloat()) * 100f
+                val colorResId = resources.getIdentifier("${category.toLowerCase()}_colors", "color", context?.packageName)
+                val color = ContextCompat.getColor(requireContext(), colorResId)
+                DonutSection(category, color, percentage)
+            }
+
+        // Kirim data ke donut chart
+        binding.donutChart.submitData(data)
+
+        // Update donut center text dengan total spending
+        val totalSpending = categorySpending.values.sum()
+        binding.donutCenterText.text = "${formatToRupiah(totalSpending)}"
+        binding.donutCenterText.setTextColor(Color.GRAY)
+    }
+
+
 
     // Fungsi untuk menetapkan background dengan StateListDrawable
     private fun setTabBackground(context: Context): StateListDrawable {
@@ -234,7 +283,12 @@ class HistoryFragment : Fragment() {
         // Listener untuk item yang dipilih
         binding.categorySpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     val selectedCategory = categories[position]
                     historyAdapter.filterByCategory(
                         if (position == 0) null else selectedCategory
@@ -245,52 +299,43 @@ class HistoryFragment : Fragment() {
             }
     }
 
-
-    private fun formatCurrency(amount: Int): String {
-        val localeID = Locale("in", "ID") // Gunakan locale Indonesia
-        val formatter = NumberFormat.getNumberInstance(localeID)
-        return formatter.format(amount)
-    }
-
     fun formatToRupiah(amount: Int): String {
         val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
         return formatter.format(amount).replace("Rp", "Rp ").replace(",00", "")
     }
 
-    fun addIncomeToHistory(name: String, amount: Int, date: String) {
-        // Menambahkan item income baru ke daftar history
-        val incomeItem = HistoryItem(
-            category = "Income",  // Kategori income
-            name = name, amount = amount,  // Format menjadi Rupiah
-            icon = R.drawable.income,  // Gunakan icon income yang sesuai
-            date = date  // Menambahkan tanggal saat ini
-        )
-
-        // Tambahkan item ke list dan beri tahu adapter untuk diperbarui
-        historyItems.add(0, incomeItem)  // Menambahkan di awal
-        historyAdapter.notifyItemInserted(0)  // Update RecyclerView
-    }
-
-
-    private fun showHistoryDetail(historyItem: HistoryItem) {
-        val modalSheet = HistoryDetailModalFragment.newInstance(historyItem)
-        modalSheet.show(parentFragmentManager, "HistoryDetailModal")
-    }
-
-    private fun parseHistory(data: String): HistoryItem {
-        val parts = data.split("|")
-        return HistoryItem(
-            category = parts[0],
-            name = parts[1],
-            amount = (parts[2].toInt()),
-            icon = resources.getIdentifier(
-                parts[3].replace("@drawable/", ""),
-                "drawable",
-                requireContext().packageName
-            ),
-            date = parts[4]
-        )
-    }
+//    fun addIncomeToHistory(name: String, amount: Int, date: String) {
+//        // Menambahkan item income baru ke daftar history
+//        val incomeItem = HistoryItem(
+//            category = "Income",  // Kategori income
+//            name = name, amount = amount,  // Format menjadi Rupiah
+//            icon = R.drawable.income,  // Gunakan icon income yang sesuai
+//            date = date  // Menambahkan tanggal saat ini
+//        )
+//
+//        // Tambahkan item ke list dan beri tahu adapter untuk diperbarui
+//        historyItems.add(0, incomeItem)  // Menambahkan di awal
+//        historyAdapter.notifyItemInserted(0)  // Update RecyclerView
+//    }
+//
+//
+//    private fun showHistoryDetail(historyItem: HistoryItem) {
+//        val modalSheet = HistoryDetailModalFragment.newInstance(historyItem)
+//        modalSheet.show(parentFragmentManager, "HistoryDetailModal")
+//    }
+//
+//    private fun parseHistory(data: String): HistoryItem {
+//        val parts = data.split("|")
+//        return HistoryItem(
+//            category = parts[0],
+//            name = parts[1],
+//            amount = (parts[2].toInt()),
+//            icon = resources.getIdentifier(
+//                parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName
+//            ),
+//            date = parts[4]
+//        )
+//    }
 
 
     private fun setBottomMarginForView(view: View) {

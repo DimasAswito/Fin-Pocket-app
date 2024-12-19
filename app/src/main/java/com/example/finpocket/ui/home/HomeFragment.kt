@@ -33,9 +33,8 @@ class HomeFragment : Fragment() {
     private val historyItems = mutableListOf<HistoryItem>()  // Daftar untuk menyimpan data history
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -44,7 +43,8 @@ class HomeFragment : Fragment() {
         setupRecyclerView()
 
         // Load income from SharedPreferences
-        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
         val income = sharedPreferences.getInt("income", 0)
         val formattedIncome = formatToRupiah(income)
         binding.incomeNominal.text = formattedIncome
@@ -79,6 +79,7 @@ class HomeFragment : Fragment() {
 
         return root
     }
+
     fun formatToRupiah(amount: Int): String {
         val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
         return formatter.format(amount).replace("Rp", "Rp ").replace(",00", "")
@@ -116,7 +117,8 @@ class HomeFragment : Fragment() {
             name = name,
             amount = amount,
             icon = R.drawable.income,
-            date = date
+            date = date,
+            type = "income"
         )
 
         addHistoryItemToHistory(incomeItem, "income")
@@ -134,7 +136,8 @@ class HomeFragment : Fragment() {
         historyAdapter.notifyDataSetChanged()  // Update RecyclerView
 
         // Simpan history ke SharedPreferences
-        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
         val gson = Gson()
         val editor = sharedPreferences.edit()
 
@@ -156,10 +159,7 @@ class HomeFragment : Fragment() {
             updateSpendingDisplay(currentAmount + item.amount)
         }
     }
-
-
-
-
+    
     private fun setupBudgetRecyclerView() {
         val planItems = listOf(
             PlanItem(R.drawable.bills, "Bills", 0.85, 350000),
@@ -173,7 +173,7 @@ class HomeFragment : Fragment() {
             PlanItem(R.drawable.healthcare, "Healthcare", 0.40, 500000),
             PlanItem(R.drawable.entertainment, "Entertainment", 0.90, 300000),
             PlanItem(R.drawable.education, "Education", 0.15, 500000),
-            PlanItem(R.drawable.savings, "Savings", 0.60,70000)
+            PlanItem(R.drawable.savings, "Savings", 0.60, 70000)
         ).take(4) // Ambil hanya 4 data
 
         val adapter = PlanAdapter(planItems) { planItem ->
@@ -187,8 +187,10 @@ class HomeFragment : Fragment() {
             // Bind data
             iconView.setImageResource(planItem.icon)
             categoryView.text = planItem.name
-            descriptionView.text = "This ${planItem.name} was filled ${"%.0f".format(planItem.percentage * 100)}%"
-            amountView.text = "Rp ${planItem.nominal.formatCurrency()}" // Update nilai aktual sesuai kebutuhan
+            descriptionView.text =
+                "This ${planItem.name} was filled ${"%.0f".format(planItem.percentage * 100)}%"
+            amountView.text =
+                "Rp ${planItem.nominal.formatCurrency()}" // Update nilai aktual sesuai kebutuhan
 
             val bottomSheetDialog = BottomSheetDialog(requireContext())
             bottomSheetDialog.setContentView(modalView)

@@ -9,5 +9,6 @@ data class HistoryItem(
     val name: String,
     val amount: Int,
     val icon: Int,
-    val date: String
+    val date: String,
+    val type: String
 ) : Parcelable
