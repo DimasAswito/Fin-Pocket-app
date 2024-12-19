@@ -46,13 +46,16 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
 
-        val incomeNominalTextView = root.findViewById<TextView>(R.id.incomeNominal)
-
+        // Load income from SharedPreferences
         val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-        val income = sharedPreferences.getInt("income", 0) // Default 0 jika tidak ditemukan
-
+        val income = sharedPreferences.getInt("income", 0)
         val formattedIncome = formatToRupiah(income)
-        incomeNominalTextView.text = "$formattedIncome"
+        binding.incomeNominal.text = formattedIncome
+
+        // Load spending from SharedPreferences
+        val spending = sharedPreferences.getInt("spending", 0)
+        val formattedSpending = formatToRupiah(spending)
+        binding.spendingNominal.text = formattedSpending
 
         binding.showMore.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_plan)
@@ -116,6 +119,12 @@ class HomeFragment : Fragment() {
         // Tambahkan item ke list dan beri tahu adapter untuk diperbarui
         historyItems.add(0, incomeItem)  // Menambahkan di awal
         historyAdapter.notifyItemInserted(0)  // Update RecyclerView
+    }
+
+    fun addSpendingToHistory(spendingItem: HistoryItem) {
+        // Add the new spending item to the history list
+        historyItems.add(0, spendingItem)  // Add to the top
+        historyAdapter.notifyItemInserted(0)  // Notify adapter to update RecyclerView
     }
 
     private fun setupBudgetRecyclerView() {
