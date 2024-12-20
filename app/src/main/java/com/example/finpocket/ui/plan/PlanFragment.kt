@@ -1,5 +1,6 @@
 package com.example.finpocket.ui.plan
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,9 +19,6 @@ import java.text.DecimalFormat
 class PlanFragment : Fragment() {
 
     private var _binding: FragmentPlanBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -35,17 +33,34 @@ class PlanFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val planItems = listOf(
-            PlanItem(R.drawable.bills, "Bills", 0.85, 350000),
-            PlanItem(R.drawable.utilities, "Lifestyle", 0.50, 330000),
-            PlanItem(R.drawable.transport, "Transport", 0.70, 400000),
-            PlanItem(R.drawable.groceries, "Grocery", 0.25, 800000),
-            PlanItem(R.drawable.healthcare, "Healthcare", 0.40, 500000),
-            PlanItem(R.drawable.entertainment, "Entertainment", 0.90, 300000),
-            PlanItem(R.drawable.education, "Education", 0.15, 500000),
-            PlanItem(R.drawable.savings, "Savings", 0.60,70000)
+        // Ambil total pemasukan dari SharedPreferences
+        val sharedPreferences =
+            requireContext().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val totalIncome = sharedPreferences.getInt("income", 1) // Default to 1 to avoid division by zero
+
+        // Daftar kategori dengan alokasi pengeluaran
+        val categories = listOf(
+            "Bills" to 0.2f,
+            "Groceries" to 0.25f,
+            "Transport" to 0.15f,
+            "Entertainment" to 0.1f,
+            "Healthcare" to 0.1f,
+            "Education" to 0.1f,
+            "Utilities" to 0.05f,
+            "Savings" to 0.05f
         )
 
+        // Buat daftar PlanItem berdasarkan total income
+        val planItems = categories.map { (category, percentage) ->
+            PlanItem(
+                icon = getIconForCategory(category),
+                name = category,
+                percentage = percentage,
+                nominal = (percentage * totalIncome).toInt() // Nominal = persen dari total income
+            )
+        }
+
+        // Inisialisasi adapter
         val adapter = PlanAdapter(planItems) { planItem ->
             // Tampilkan modal sheet saat item diklik
             val modalView = layoutInflater.inflate(R.layout.modal_budget_detail, null)
@@ -57,22 +72,38 @@ class PlanFragment : Fragment() {
             // Bind data
             iconView.setImageResource(planItem.icon)
             categoryView.text = planItem.name
-            descriptionView.text = "This ${planItem.name} was filled ${"%.0f".format(planItem.percentage * 100)}%"
-            amountView.text = "Rp ${planItem.nominal.formatCurrency()}"// Update nilai aktual sesuai kebutuhan
+            descriptionView.text =
+                "This ${planItem.name} was allocated ${"%.0f".format(planItem.percentage * 100)}%"
+            amountView.text = "Rp ${planItem.nominal.formatCurrency()}"
 
             val bottomSheetDialog = BottomSheetDialog(requireContext())
             bottomSheetDialog.setContentView(modalView)
             bottomSheetDialog.show()
         }
 
+        // Set RecyclerView layout dan adapter
         binding.budgetRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.budgetRecyclerView.adapter = adapter
     }
+
+    private fun getIconForCategory(category: String): Int {
+        return when (category) {
+            "Bills" -> R.drawable.bills
+            "Groceries" -> R.drawable.groceries
+            "Transport" -> R.drawable.transport
+            "Entertainment" -> R.drawable.entertainment
+            "Healthcare" -> R.drawable.healthcare
+            "Education" -> R.drawable.education
+            "Utilities" -> R.drawable.utilities
+            "Savings" -> R.drawable.savings
+            else -> R.drawable.ic_baseline_wallet_24
+        }
+    }
+
     fun Int.formatCurrency(): String {
         val formatter = DecimalFormat("#,###")
         return formatter.format(this)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

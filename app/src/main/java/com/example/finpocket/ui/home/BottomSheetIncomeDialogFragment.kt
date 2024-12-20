@@ -57,7 +57,6 @@ class BottomSheetIncomeDialogFragment : BottomSheetDialogFragment() {
                 Toast.makeText(context, "Please fill in both fields", Toast.LENGTH_SHORT).show()
             }
         }
-
         return view
     }
 

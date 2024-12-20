@@ -60,13 +60,13 @@
         app:layout_constraintTop_toBottomOf="@+id/budgetTextView"
         app:startIconDrawable="@drawable/ic_baseline_money_24">
 
-        <EditText
+        <com.example.finpocket.ui.manualPlanning.CurrencyEditText
             android:id="@+id/budgetEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:digits="0123456789"
+            android:digits="0123456789."
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 

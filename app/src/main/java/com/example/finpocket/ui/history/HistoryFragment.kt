@@ -304,38 +304,40 @@ class HistoryFragment : Fragment() {
         return formatter.format(amount).replace("Rp", "Rp ").replace(",00", "")
     }
 
-//    fun addIncomeToHistory(name: String, amount: Int, date: String) {
-//        // Menambahkan item income baru ke daftar history
-//        val incomeItem = HistoryItem(
-//            category = "Income",  // Kategori income
-//            name = name, amount = amount,  // Format menjadi Rupiah
-//            icon = R.drawable.income,  // Gunakan icon income yang sesuai
-//            date = date  // Menambahkan tanggal saat ini
-//        )
-//
-//        // Tambahkan item ke list dan beri tahu adapter untuk diperbarui
-//        historyItems.add(0, incomeItem)  // Menambahkan di awal
-//        historyAdapter.notifyItemInserted(0)  // Update RecyclerView
-//    }
-//
-//
-//    private fun showHistoryDetail(historyItem: HistoryItem) {
-//        val modalSheet = HistoryDetailModalFragment.newInstance(historyItem)
-//        modalSheet.show(parentFragmentManager, "HistoryDetailModal")
-//    }
-//
-//    private fun parseHistory(data: String): HistoryItem {
-//        val parts = data.split("|")
-//        return HistoryItem(
-//            category = parts[0],
-//            name = parts[1],
-//            amount = (parts[2].toInt()),
-//            icon = resources.getIdentifier(
-//                parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName
-//            ),
-//            date = parts[4]
-//        )
-//    }
+    fun addIncomeToHistory(name: String, amount: Int, date: String) {
+        // Menambahkan item income baru ke daftar history
+        val incomeItem = HistoryItem(
+            category = "Income",  // Kategori income
+            name = name, amount = amount,  // Format menjadi Rupiah
+            icon = R.drawable.income,  // Gunakan icon income yang sesuai
+            date = date,  // Menambahkan tanggal saat ini
+            type = "income"
+        )
+
+        // Tambahkan item ke list dan beri tahu adapter untuk diperbarui
+        historyItems.add(0, incomeItem)  // Menambahkan di awal
+        historyAdapter.notifyItemInserted(0)  // Update RecyclerView
+    }
+
+
+    private fun showHistoryDetail(historyItem: HistoryItem) {
+        val modalSheet = HistoryDetailModalFragment.newInstance(historyItem)
+        modalSheet.show(parentFragmentManager, "HistoryDetailModal")
+    }
+
+    private fun parseHistory(data: String): HistoryItem {
+        val parts = data.split("|")
+        return HistoryItem(
+            category = parts[0],
+            name = parts[1],
+            amount = (parts[2].toInt()),
+            icon = resources.getIdentifier(
+                parts[3].replace("@drawable/", ""), "drawable", requireContext().packageName
+            ),
+            date = parts[4],
+            type = parts[5]
+        )
+    }
 
 
     private fun setBottomMarginForView(view: View) {

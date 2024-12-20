@@ -2,6 +2,8 @@ package com.example.finpocket.ui.manualPlanning
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -19,6 +21,8 @@ import com.example.finpocket.model.Plan
 import com.example.finpocket.model.PlanRequest
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 class ManualPlanningActivity : AppCompatActivity() {
 
@@ -71,9 +75,8 @@ class ManualPlanningActivity : AppCompatActivity() {
         )
     }
 
-
     private fun handleAiRecommendation() {
-        val income = findViewById<EditText>(R.id.budgetEditText).text.toString().toIntOrNull()
+        val income : CurrencyEditText = findViewById<CurrencyEditText>(R.id.budgetEditText)
 
         if (income == null) {
             Toast.makeText(this, "Please input a valid budget amount", Toast.LENGTH_SHORT).show()
@@ -83,7 +86,7 @@ class ManualPlanningActivity : AppCompatActivity() {
         // Simpan income ke SharedPreferences
         val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.putInt("income", income)
+        editor.putInt("income", income.getIntValue().toInt())
         editor.apply()
 
         // Navigasi ke HomeFragment
@@ -109,6 +112,5 @@ class ManualPlanningActivity : AppCompatActivity() {
             }
         }
     }
-
 }
 
